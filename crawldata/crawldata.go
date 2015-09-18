@@ -34,7 +34,7 @@ func InsertData(datas *ImageDatas) {
 	for i := 0; i < len(imageDatas); i++ {
 		imageData := imageDatas[i]
 		// Prepare statement for inserting data
-		imgIns, err := db.Prepare("INSERT INTO gratisography (img_url, type_name, title, width, height) VALUES( ?, ?, ?, ?, ? )") // ? = placeholder
+		imgIns, err := db.Prepare("INSERT INTO tableName (img_url, type_name, title, width, height) VALUES( ?, ?, ?, ?, ? )") // ? = placeholder
 		if err != nil {
 			fmt.Println(s.Join([]string{"拼装数据格式", err.Error()}, "-->"))
 		}

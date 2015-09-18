@@ -9,7 +9,7 @@ import (
 
 func OpenDatabase() (*sql.DB, error) {
 	// 连接数据库
-	db, err := sql.Open("mysql", "root:mysql@tcp(xxx.xxx.xxx.xxx:3306)/indiepic?charset=utf8")
+	db, err := sql.Open("mysql", "root:mysql@tcp(xxx.xxx.xxx.xxx:3306)/xxx?charset=utf8")
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func GetAllImages() (imageDatas ImageDatas, err error) {
 	defer db.Close()
 
 	// Prepare statement for inserting data
-	imgOut, err := db.Query("SELECT * FROM gratisography")
+	imgOut, err := db.Query("SELECT * FROM tableName")
 	if err != nil {
 		fmt.Println(s.Join([]string{"获取数据失败", err.Error()}, "-->"))
 		return nil, err
