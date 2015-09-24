@@ -68,6 +68,15 @@ func Crawl() {
 	var datas ImageDatas
 	// 抓取数据
 	imageDatas := CrawlData(&datas)
-	InsertData(&imageDatas)
+	for i := 0; i < len(imageDatas); i++ {
+		fmt.Println(imageDatas[i].Src, imageDatas[i].Title, imageDatas[i].Tp, imageDatas[i].Height, imageDatas[i].Width)
+	}
 
+	// 或者
+	for _, imageData := range imageDatas {
+		fmt.Println(imageData.Src, imageData.Title, imageData.Tp, imageData.Height, imageData.Width)
+	}
+
+	// 将数据插入数据库
+	// InsertData(&imageDatas)
 }
