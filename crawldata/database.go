@@ -10,7 +10,7 @@ import (
 
 func OpenDatabase() (*sql.DB, error) {
 	// 连接数据库
-	db, err := sql.Open("mysql", "root:mysql@tcp(xxx.xx.xx.xxx:3306)/databaseName?charset=utf8")
+	db, err := sql.Open("mysql", "root:mysql@tcp(123.57.63.212:3306)/indiepic?charset=utf8")
 	if err != nil {
 		return nil, err
 	}
@@ -60,13 +60,14 @@ func GetAllImages() (imageDatas ImageDatas, err error) {
 	defer db.Close()
 
 	// Prepare statement for inserting data
-	imgOut, err := db.Query("SELECT * FROM tableName")
+	imgOut, err := db.Query("SELECT * FROM gratisography")
 	if err != nil {
 		fmt.Println(s.Join([]string{"获取数据失败", err.Error()}, "-->"))
 		return nil, err
 	}
 	defer imgOut.Close()
 
+	// 定义扫描select到的数据库字段的变量
 	var (
 		id          int
 		img_url     string
@@ -77,6 +78,7 @@ func GetAllImages() (imageDatas ImageDatas, err error) {
 		create_time string
 	)
 	for imgOut.Next() {
+		// db.Query()中select几个字段就需要Scan多少个字段
 		err := imgOut.Scan(&id, &img_url, &type_name, &title, &width, &height, &create_time)
 		if err != nil {
 			fmt.Println(s.Join([]string{"查询数据失败", err.Error()}, "-->"))

@@ -67,7 +67,7 @@ func Crawl() {
 	// 定义一个切片存储所有数据
 	var datas ImageDatas
 	// 抓取数据
-	// imageDatas := CrawlData(&datas)
+	imageDatas := CrawlData(&datas)
 	// for i := 0; i < len(imageDatas); i++ {
 	// 	fmt.Println(imageDatas[i].Src, imageDatas[i].Title, imageDatas[i].Tp, imageDatas[i].Height, imageDatas[i].Width)
 	// }

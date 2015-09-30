@@ -1,51 +1,56 @@
 package main
 
 import (
-	// "encoding/json"
-	// "fmt"
-	// "github.com/go-martini/martini"
-	// "github.com/martini-contrib/render"
+	"fmt"
+	"github.com/go-martini/martini"
+	"github.com/martini-contrib/encoder"
 	"indiepic/crawldata"
-	// s "strings"
+	"net/http"
+	s "strings"
 )
 
 type Results struct {
-	Err   int
-	Msg   string
-	Datas crawldata.ImageDatas
+	Err   int                  // 错误码
+	Msg   string               // 错误信息
+	Datas crawldata.ImageDatas // 数据，无数据时为nil
 }
 
 func main() {
 	// 使用crawldata包里面的Crawl()抓取需要的数据存到数据库
-	crawldata.Crawl()
+	// crawldata.Crawl()
 
-	// m := martini.Classic()
-	// m.Use(render.Renderer())
+	m := martini.New()
+	route := martini.NewRouter()
 
-	// var (
-	// 	results Results
-	// 	err     error
-	// )
+	var (
+		results Results
+		err     error
+	)
 
-	// m.Get("/", func(r render.Render) {
-	// 	r.JSON(200, map[string]interface{}{"Err": "10001", "Msg": "Not Found"})
-	// })
-	// // This will set the Content-Type header to "application/json; charset=UTF-8"
-	// m.Get("/api", func(r render.Render) {
-	// 	results.Datas, err = crawldata.GetAllImages()
-	// 	if err != nil {
-	// 		fmt.Println(s.Join([]string{"获取数据失败", err.Error()}, "-->"))
-	// 		r.JSON(200, map[string]interface{}{"Err": "10001", "Msg": "Data Error"})
-	// 	} else {
-	// 		results.Err = 10001
-	// 		results.Msg = "获取数据成功"
-	// 		if res, err := json.Marshal(results); err == nil {
-	// 			r.JSON(200, string(res))
-	// 		} else {
-	// 			r.JSON(200, map[string]interface{}{"Err": "10001", "Msg": "Data Error"})
-	// 		}
-	// 	}
-	// })
-	// m.Run()
+	m.Use(func(c martini.Context, w http.ResponseWriter, r *http.Request) {
+		// 将 encoder.JsonEncoder{} 按照 encoder.Encoder 接口（注意大小写）类型注入到内部
+		c.MapTo(encoder.JsonEncoder{}, (*encoder.Encoder)(nil))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	})
 
+	route.Get("/", func(enc encoder.Encoder) (int, []byte) {
+		result := Results{10001, "Not Found Data", nil}
+		return http.StatusOK, encoder.Must(enc.Encode(result))
+	})
+
+	route.Get("/api", func(enc encoder.Encoder) (int, []byte) {
+		results.Datas, err = crawldata.GetAllImages()
+		if err != nil {
+			fmt.Println(s.Join([]string{"获取数据失败", err.Error()}, "-->"))
+			result := Results{10001, "Data Error", nil}
+			return http.StatusOK, encoder.Must(enc.Encode(result))
+		} else {
+			results.Err = 10001
+			results.Msg = "获取数据成功"
+			return http.StatusOK, encoder.Must(enc.Encode(results))
+		}
+	})
+
+	m.Action(route.Handle)
+	m.Run()
 }
