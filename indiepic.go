@@ -42,10 +42,11 @@ func main() {
 		results.Datas, err = crawldata.GetAllImages()
 		if err != nil {
 			fmt.Println(s.Join([]string{"获取数据失败", err.Error()}, "-->"))
+
 			result := Results{10001, "Data Error", nil}
 			return http.StatusOK, encoder.Must(enc.Encode(result))
 		} else {
-			results.Err = 10001
+			results.Err = 10000
 			results.Msg = "获取数据成功"
 			return http.StatusOK, encoder.Must(enc.Encode(results))
 		}
