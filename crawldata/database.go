@@ -10,7 +10,7 @@ import (
 
 func OpenDatabase() (*sql.DB, error) {
 	// 连接数据库
-	db, err := sql.Open("mysql", "root:mysql@tcp(123.57.63.212:3306)/indiepic?charset=utf8")
+	db, err := sql.Open("mysql", "root:mysql@tcp(xxx.xxx.xxx.xxx:3306)/databeseName?charset=utf8")
 	if err != nil {
 		return nil, err
 	}
