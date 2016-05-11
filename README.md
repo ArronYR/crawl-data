@@ -1,5 +1,5 @@
 # GO_CrawlData_MySQL
-一个使用`GO`从网站抓取图片等数据，再将其存入数据库，并使用`http`提供`json`接口。
+一个使用`GO`从网站抓取图片等数据，再将其存入数据库，并提供`json`接口。
 
 ## 数据抓取
 使用 [goquery](https://github.com/PuerkitoBio/goquery) - a little like that j-thing, only in Go
